@@ -1,0 +1,30 @@
+### Environment Files ###
+# Ignore ALL environment files
+.env
+*.env
+**/.env
+**/*.env
+
+# Except example/template files
+!.env.example
+!**/.env.example
+!**/*.env.example
+
+### Maven ###
+target/
+**/target/
+pom.xml.versionsBackup
+
+### Frontend ###
+node_modules/
+dist/
+build/
+
+### IDE ###
+.idea/
+.vscode/
+*.iml
+
+### System ###
+.DS_Store
+Thumbs.db
