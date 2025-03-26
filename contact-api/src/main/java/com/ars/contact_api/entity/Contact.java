@@ -8,6 +8,8 @@ import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_DEFAULT;
+
 
 @Getter
 @Setter
@@ -15,7 +17,7 @@ import org.hibernate.annotations.UuidGenerator;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+@JsonInclude(NON_DEFAULT)
 @Table(name = "contacts")
 public class Contact {
     @Id @UuidGenerator
