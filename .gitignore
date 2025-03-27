@@ -5,6 +5,9 @@
 **/.env
 **/*.env
 
+### Config Files ###
+application-dev.yml
+
 # Except example/template files
 !.env.example
 !**/.env.example
