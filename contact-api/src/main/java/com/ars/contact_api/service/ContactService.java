@@ -45,10 +45,13 @@ public class ContactService {
     }
 
     public void deleteContact(Contact contact) {
-        if (!contactRepository.existsById(contact.getId())) {
-            throw new ApiException("Contact doesn't exist");
+        if (contactRepository.findByEmail(contact.getEmail()).isPresent()) {
+            contactRepository.delete(contact);
         }
-        contactRepository.delete(contact);
+        else {
+            throw new ApiException("Contact not found");
+        }
+
     }
 
     public String uploadPhoto(String id ,MultipartFile file) {
