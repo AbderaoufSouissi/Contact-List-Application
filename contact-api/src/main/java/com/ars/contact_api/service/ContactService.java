@@ -80,4 +80,8 @@ public class ContactService {
             throw new ApiException("Unable to save image");
         }
     };
+
+    public Contact findByEmail(String email) {
+        return contactRepository.findByEmail(email).orElseThrow(()-> new ApiException("Contact not found"));
+    }
 }

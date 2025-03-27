@@ -50,4 +50,11 @@ public class ContactResource {
     public byte[] getPhoto(@PathVariable("filename") String filename) throws IOException {
         return Files.readAllBytes(Paths.get(PHOTO_DIRECTORY + filename));
     }
+
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteContact(@RequestParam String email) {
+        contactService.deleteContact(contactService.findByEmail(email));
+        return ResponseEntity.noContent().build();
+    }
 }
