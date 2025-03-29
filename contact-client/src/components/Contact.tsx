@@ -1,45 +1,45 @@
 import { Link } from "react-router-dom";
 
-type ContactProps = {
+export type ContactProps = {
   id: string;
-  photoUrl: string;
   name: string;
   title: string;
   email: string;
   address: string;
-  phone: number;
   status: string;
+  phone: number;
+  photoUrl: string;
 };
 
-const Contact = (props: ContactProps) => {
+const Contact = (contact: ContactProps) => {
   return (
-    <Link to={`/contacts/${props.id}`} className="contact__item">
+    <Link to={`/contacts/${contact.id}`} className="contact__item">
       <div className="contact__header">
         <div className="contact__image">
-          <img src={props.photoUrl} alt={props.name} />
+          <img src={contact.photoUrl} alt={contact.name} />
         </div>
         <div className="contact__details">
-          <p className="contact_name">{props.name} </p>
-          <p className="contact_title">{props.title}</p>
+          <p className="contact_name">{contact.name} </p>
+          <p className="contact_title">{contact.title}</p>
         </div>
       </div>
       <div className="contact__body">
         <p>
-          <i className="bi bi-envelope"></i> {props.email}
+          <i className="bi bi-envelope"></i> {contact.email}
         </p>
         <p>
-          <i className="bi bi-geo"></i> {props.address}
+          <i className="bi bi-geo"></i> {contact.address}
         </p>
         <p>
-          <i className="bi bi-telephone"></i> {props.phone}
+          <i className="bi bi-telephone"></i> {contact.phone}
         </p>
         <p>
-          {props.status === "Active" ? (
+          {contact.status === "Active" ? (
             <i className="bi bi-check-circle"></i>
           ) : (
             <i className="bi bi-x-circle"></i>
           )}{" "}
-          {props.status}
+          {contact.status}
         </p>
       </div>
     </Link>
@@ -47,3 +47,4 @@ const Contact = (props: ContactProps) => {
 };
 
 export default Contact;
+
