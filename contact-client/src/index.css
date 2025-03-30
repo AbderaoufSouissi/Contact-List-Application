@@ -16,7 +16,6 @@ a {
 }
 
 .main {
-
 }
 
 .header {
@@ -54,15 +53,18 @@ a {
 } */
 
 .contact-header {
-
 }
 
 .contact-image {
-
 }
 
 .contact-details {
   border: 1px solid black;
+}
+
+.contact-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
 /* Media queries for responsive design */
