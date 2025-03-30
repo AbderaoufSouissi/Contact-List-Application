@@ -1,5 +1,5 @@
 type HeaderProps = {
-  toggleModal: (parm: boolean) => void;
+  toggleModal: (param: boolean) => void;
   nbOfContacts: number;
 };
 

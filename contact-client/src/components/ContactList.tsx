@@ -22,7 +22,7 @@ const ContactList = ({data, currentPage,getAllContacts} : ContactListProps) => {
         Want to add a new contact ?
         </div>
       )}
-      <ul className="contact__list">
+      <ul className="contact-list">
         {data?.content?.length > 0 &&
           data.content.map((contact: ContactProps) => (
             <Contact

@@ -14,16 +14,16 @@ export type ContactProps = {
 const Contact = (contact: ContactProps) => {
   return (
     <Link to={`/contacts/${contact.id}`} className="contact__item">
-      <div className="contact__header">
-        <div className="contact__image">
+      <div className="contact-header">
+        <div className="contact-image">
           <img src={contact.photoUrl} alt={contact.name} />
         </div>
-        <div className="contact__details">
-          <p className="contact_name">{contact.name} </p>
-          <p className="contact_title">{contact.title}</p>
+        <div className="contact-details">
+          <p className="contact-name">{contact.name} </p>
+          <p className="contact-title">{contact.title}</p>
         </div>
       </div>
-      <div className="contact__body">
+      <div className="contact-body">
         <p>
           <i className="bi bi-envelope"></i> {contact.email}
         </p>

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import "./App.css";
+import "./index.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { getContacts } from "./api/ContactService";
+import Header from "./components/Header";
 
 function App() {
   const [data, setData] = useState({});
@@ -10,20 +11,26 @@ function App() {
   const getAllContacts = async (page = 0, size = 10) => {
     try {
       setCurrentPage(page);
-      const data = await getContacts(page, size);
-      setData(data);
-      console.log(data);
+      const response = await getContacts(page, size);
+      console.log(response);
+      console.log(response.data);
+      setData(response.data);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const toggleModal = (show) => {
+    console.log("i was clicked");
+  };
+
   useEffect(() => {
-    getAllContacts();  
-  },[])
+    getAllContacts();
+  }, []);
   return (
-    <div>
-      <h1>App</h1>
-    </div>
+    <>
+      <Header toggleModal={toggleModal} nbOfContacts={data.totalElements} />
+    </>
   );
 }
 
