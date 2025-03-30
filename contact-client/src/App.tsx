@@ -3,9 +3,11 @@ import "./index.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { getContacts } from "./api/ContactService";
 import Header from "./components/Header";
+import { Navigate, Route, Routes } from "react-router-dom";
+import ContactList from "./components/ContactList";
 
 function App() {
-  const [data, setData] = useState({});
+  const [data, setData] = useState({ content: [], totalPages: 0, totalElements:0});
   const [currentPage, setCurrentPage] = useState(0);
 
   const getAllContacts = async (page = 0, size = 10) => {
@@ -20,7 +22,7 @@ function App() {
     }
   };
 
-  const toggleModal = (show) => {
+  const toggleModal = (show: boolean) => {
     console.log("i was clicked");
   };
 
@@ -30,6 +32,23 @@ function App() {
   return (
     <>
       <Header toggleModal={toggleModal} nbOfContacts={data.totalElements} />
+      <main className="main">
+        <div className="container">
+          <Routes>
+            <Route path="/" element={<Navigate to="/contacts" />} />
+            <Route
+              path="/contacts"
+              element={
+                <ContactList
+                  data={data}
+                  currentPage={currentPage}
+                  getAllContacts={getAllContacts}
+                />
+              }
+            />
+          </Routes>
+        </div>
+      </main>
     </>
   );
 }

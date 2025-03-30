@@ -13,7 +13,7 @@ export type ContactProps = {
 
 const Contact = (contact: ContactProps) => {
   return (
-    <Link to={`/contacts/${contact.id}`} className="contact__item">
+    <Link to={`/contacts/${contact.id}`} className="contact-item">
       <div className="contact-header">
         <div className="contact-image">
           <img src={contact.photoUrl} alt={contact.name} />
@@ -47,4 +47,3 @@ const Contact = (contact: ContactProps) => {
 };
 
 export default Contact;
-

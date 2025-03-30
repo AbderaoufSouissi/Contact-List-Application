@@ -2,24 +2,28 @@ import { ContactProps } from "./Contact";
 import Contact from "./Contact";
 
 type ContactListProps = {
-    data: Data
-    currentPage: number;
-    getAllContacts: (index: number) => Array<ContactProps>
-}
+  data: Data;
+  currentPage: number;
+  getAllContacts: (page?: number, size?: number) => Promise<void>;
+};
 
 type Data = {
-    content : Array<ContactProps>
-    totalPages: number
-}
+  content: Array<ContactProps>;
+  totalPages: number;
+};
 
-
-const ContactList = ({data, currentPage,getAllContacts} : ContactListProps) => {
+const ContactList = ({
+  data,
+  currentPage,
+  getAllContacts,
+}: ContactListProps) => {
   return (
     <main className="main">
       {data?.content?.length === 0 && (
         <div>
-          No Contacts found.<br/>
-        Want to add a new contact ?
+          No Contacts found.
+          <br />
+          Want to add a new contact ?
         </div>
       )}
       <ul className="contact-list">
