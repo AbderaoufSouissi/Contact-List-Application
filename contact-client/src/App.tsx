@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./index.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { getContacts } from "./api/ContactService";
+import { getContacts, saveContact, updatePhoto } from "./api/ContactService";
 import Header from "./components/Header";
 import { Navigate, Route, Routes } from "react-router-dom";
 import ContactList from "./components/ContactList";
@@ -49,6 +49,35 @@ function App() {
     console.log(values);
   };
 
+  const handleNewContact = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      const { data } = await saveContact(values);
+      const formData = new FormData();
+      formData.append("file", file ?? new Blob(), file?.name ?? "unknown");
+      formData.append("id", data.id);
+      const { data: photoUrl } = await updatePhoto(formData);
+      toggleModal(false);
+      console.log(photoUrl);
+      setFile(undefined);
+      if (fileRef.current) {
+        fileRef.current.value = "";
+      }
+      setValues({
+        name: "",
+        email: "",
+        phone: "",
+        address: "",
+        title: "",
+        status: "",
+      });
+      getAllContacts();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getAllContacts();
   }, []);
@@ -82,7 +111,7 @@ function App() {
         </div>
         <div className="divider"></div>
         <div className="modal-body">
-          <form>
+          <form onSubmit={handleNewContact}>
             <div className="user-details">
               <div className="input-box">
                 <span className="details">Name</span>

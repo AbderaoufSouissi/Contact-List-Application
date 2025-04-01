@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 
 export type ContactProps = {
-  id: string;
+  id?: string;
   name: string;
   title: string;
   email: string;
   address: string;
   status: string;
-  phone: number;
-  photoUrl: string;
+  phone: string;
+  photoUrl?: string;
 };
 
 const Contact = (contact: ContactProps) => {

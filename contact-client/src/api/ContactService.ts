@@ -15,9 +15,14 @@ export async function getContact(id: string) {
 export async function updateContact(contact: ContactProps) {
   return await axios.post(API_URL, contact);
 }
-export async function updatePhoto(formData: string) {
-  return await axios.put(API_URL + "/photo", formData);
+export async function updatePhoto(formData: FormData) {
+  return await axios.put(API_URL + "/photo", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data", // ✅ Required for file uploads
+    },
+  });
 }
+
 export async function deleteContact(email: string) {
   return await axios.delete(API_URL + "?email=" + email);
 }
