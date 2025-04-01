@@ -7,7 +7,11 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import ContactList from "./components/ContactList";
 
 function App() {
-  const [data, setData] = useState({ content: [], totalPages: 0, totalElements:0});
+  const [data, setData] = useState({
+    content: [],
+    totalPages: 0,
+    totalElements: 0,
+  });
   const [currentPage, setCurrentPage] = useState(0);
 
   const getAllContacts = async (page = 0, size = 10) => {
