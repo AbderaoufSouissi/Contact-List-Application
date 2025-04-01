@@ -31,8 +31,6 @@ function App() {
     try {
       setCurrentPage(page);
       const response = await getContacts(page, size);
-      console.log(response);
-      console.log(response.data);
       setData(response.data);
     } catch (error) {
       console.log(error);
@@ -46,7 +44,6 @@ function App() {
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValues({ ...values, [event.target.name]: event.target.value });
-    console.log(values);
   };
 
   const handleNewContact = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -72,7 +69,6 @@ function App() {
         status: "",
       });
       getAllContacts();
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -111,7 +107,19 @@ function App() {
         </div>
         <div className="divider"></div>
         <div className="modal-body">
-          <form onSubmit={handleNewContact}>
+          <form
+            onSubmit={handleNewContact}
+            onReset={() => {
+              setValues({
+                name: "",
+                email: "",
+                title: "",
+                phone: "",
+                address: "",
+                status: "",
+              });
+            }}
+          >
             <div className="user-details">
               <div className="input-box">
                 <span className="details">Name</span>
@@ -180,7 +188,6 @@ function App() {
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     const selectedFile = event.target.files?.[0]; // Safely accessing the first file
                     setFile(selectedFile);
-                    console.log(file);
                   }}
                   ref={fileRef}
                   name="photo"
