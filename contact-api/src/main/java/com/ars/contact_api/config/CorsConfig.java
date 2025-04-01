@@ -18,8 +18,15 @@ public class CorsConfig {
         var corsConfig = new CorsConfiguration();
         corsConfig.setAllowCredentials(true);
         corsConfig.setAllowedOrigins(List.of("http://localhost:5173"));
-        corsConfig.setAllowedHeaders(List.of("Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers"));
-        corsConfig.setExposedHeaders(List.of("Access-Control-Allow-Origin", "Access-Control-Allow-Headers"));
+        corsConfig.setAllowedHeaders(List.of(
+                "Origin",
+                "Access-Control-Request-Method",
+                "Access-Control-Request-Headers",
+                "Content-Type",
+                "Authorization"
+        ));
+        corsConfig.setExposedHeaders(List.of("Authorization", "Content-Type"));
+
         corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         urlBasedCorsConfigSource.registerCorsConfiguration("/**", corsConfig);
         return new CorsFilter(urlBasedCorsConfigSource);
