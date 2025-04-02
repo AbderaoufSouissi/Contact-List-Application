@@ -3,13 +3,18 @@ import "./index.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { getContacts, saveContact, updatePhoto } from "./api/ContactService";
 import Header from "./components/Header";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import ContactList from "./components/ContactList";
+import ContactDetails from "./components/ContactDetails";
 import { ContactInfo } from "./types/ContactInfo";
 
 function App() {
+  const location = useLocation();
+
   const modalRef = useRef<HTMLDialogElement | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
+
+  const isContactDetailsPage = location.pathname.startsWith("/contacts/");
 
   const [data, setData] = useState({
     content: [],
@@ -74,12 +79,19 @@ function App() {
     }
   };
 
+  const updateContact = async () => {};
+  const updateImage = async () => {};
+
   useEffect(() => {
     getAllContacts();
   }, []);
   return (
     <>
-      <Header toggleModal={toggleModal} nbOfContacts={data.totalElements} />
+      <Header
+        toggleModal={toggleModal}
+        nbOfContacts={data.totalElements}
+        isContactDetailsPage={isContactDetailsPage}
+      />
       <main className="main">
         <div className="container">
           <Routes>
@@ -91,6 +103,15 @@ function App() {
                   data={data}
                   currentPage={currentPage}
                   getAllContacts={getAllContacts}
+                />
+              }
+            />
+            <Route
+              path="/contacts/:id"
+              element={
+                <ContactDetails
+                  updateContact={updateContact}
+                  updateImage={updateImage}
                 />
               }
             />
