@@ -1,15 +1,29 @@
-import { data, useParams } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import {
-  getContact,
-  updatePhoto as apiUpdatePhoto,
-} from "../api/ContactService";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useParams } from "react-router-dom";
+import { getContact } from "../api/ContactService";
 
-const ContactDetails = () => {
-  const inputRef = useRef<HTMLInputElement | null>(null);
+interface Contact {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  title: string;
+  status: string;
+  photoUrl: string;
+}
 
-  const [contact, setContact] = useState({
+interface ContactDetailProps {
+  updateContact: (contact: Contact) => Promise<void>;
+  updateImage: (formData: FormData) => Promise<string | undefined>;
+}
+
+const ContactDetail: React.FC<ContactDetailProps> = ({
+  updateContact,
+  updateImage,
+}) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [contact, setContact] = useState<Contact>({
     id: "",
     name: "",
     email: "",
@@ -20,23 +34,19 @@ const ContactDetails = () => {
     photoUrl: "",
   });
 
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
-  useEffect(() => {
-    const fetchContact = async () => {
-      try {
-        if (id) {
-          // Ensure id is defined before fetching
-          const { data } = await getContact(id);
-          setContact(data);
-          console.log(data);
-        }
-      } catch (error) {
-        console.error("Error fetching contact:", error);
-      }
-    };
-    fetchContact();
-  }, [id]); // Added id to dependency array
+  const fetchContact = async (id: string | undefined) => {
+    if (!id) return;
+
+    try {
+      const { data } = await getContact(id);
+      setContact(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const selectImage = () => {
     if (inputRef.current) {
@@ -44,46 +54,44 @@ const ContactDetails = () => {
     }
   };
 
-  const updateImage = async (formData: FormData) => {
+  const updatePhoto = async (file: File) => {
+    if (!id) return;
+
     try {
-      const { data: photoUrl } = await apiUpdatePhoto(formData);
-      return photoUrl;
+      const formData = new FormData();
+      formData.append("file", file, file.name);
+      formData.append("id", id);
+
+      const newPhotoUrl = await updateImage(formData);
+      if (newPhotoUrl) {
+        setContact((prev) => ({ ...prev, photoUrl: newPhotoUrl }));
+      }
+
+      // Reset file input
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const updateContact = async () => {
-    // Implement contact update logic here
-  };
-
-  const handlePhotoUpdate = async (file: File) => {
-    try {
-      if (id && file) {
-        const formData = new FormData();
-        formData.append("file", file, file.name);
-        formData.append("id", id);
-        await updateImage(formData);
-        setContact((prev) => ({
-          ...prev,
-          photoUrl: prev.photoUrl + "?updated_at=" + new Date().getTime(),
-        }));
-      }
-    } catch (error) {
-      console.error("Error updating photo:", error);
-    }
-  };
-
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setContact({ ...contact, [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+    setContact((prev) => ({ ...prev, [name]: value }));
   };
 
-  const onUpdateContact = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const onUpdateContact = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    updateContact(contact);
+    try {
+      await updateContact(contact);
+      fetchContact(id);
+    } catch (error) {}
   };
+
+  useEffect(() => {
+    fetchContact(id);
+  }, [id]);
 
   return (
     <>
@@ -92,23 +100,22 @@ const ContactDetails = () => {
       </Link>
       <div className="profile">
         <div className="profile-details">
-          <div className="image-container">
-            <img
-              src={contact.photoUrl || "default-image.jpg"}
-              alt={"Photo of " + contact.name}
-            />
-          </div>
+          <img
+            src={contact.photoUrl || "default-profile.png"}
+            alt={`Profile photo of ${contact.name}`}
+            className="profile-image"
+          />
           <div className="profile-metadata">
             <p className="profile-name">{contact.name}</p>
             <p className="profile-muted">JPG, GIF, or PNG. Max size of 10MB</p>
-            <button className="btn" type="button" onClick={selectImage}>
+            <button onClick={selectImage} className="btn">
               <i className="bi bi-cloud-upload"></i> Change Photo
             </button>
           </div>
         </div>
         <div className="profile-settings">
           <div>
-            <form onSubmit={updateContact} className="form">
+            <form onSubmit={onUpdateContact} className="form">
               <div className="user-details">
                 <input
                   type="hidden"
@@ -129,7 +136,7 @@ const ContactDetails = () => {
                 <div className="input-box">
                   <span className="details">Email</span>
                   <input
-                    type="text"
+                    type="email"
                     value={contact.email}
                     onChange={onChange}
                     name="email"
@@ -139,7 +146,7 @@ const ContactDetails = () => {
                 <div className="input-box">
                   <span className="details">Phone</span>
                   <input
-                    type="text"
+                    type="tel"
                     value={contact.phone}
                     onChange={onChange}
                     name="phone"
@@ -192,9 +199,8 @@ const ContactDetails = () => {
           type="file"
           ref={inputRef}
           onChange={(event) => {
-            const file = event.target.files?.[0];
-            if (file) {
-              handlePhotoUpdate(file);
+            if (event.target.files?.[0]) {
+              updatePhoto(event.target.files[0]);
             }
           }}
           name="file"
@@ -205,4 +211,4 @@ const ContactDetails = () => {
   );
 };
 
-export default ContactDetails;
+export default ContactDetail;

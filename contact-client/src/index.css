@@ -10,12 +10,15 @@ body {
 }
 
 a {
-  color: inherit; /* Inherits color from parent element */
-  text-decoration: none; /* Removes underline */
+  color: inherit;
+  text-decoration: none;
 }
 
 .main {
-  margin-top: 1rem;
+  margin: 0 auto;
+  min-height: calc(100vh - 200px);
+  position: relative;
+  padding-bottom: 80px;
 }
 
 .header {
@@ -47,12 +50,13 @@ a {
   border: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transition: all 0.5s ease;
-  position: relative; /* Add position relative */
+  position: relative;
 }
 
 .contact-item {
   border: 1px solid #e2e8f0;
   border-radius: 12px;
+  width: 50vmin;
   cursor: pointer;
   padding: 1.25rem;
   background-color: rgba(255, 255, 255, 0.76);
@@ -61,6 +65,8 @@ a {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  height: 100%;
+  min-height: 200px;
 }
 
 .contact-item:hover {
@@ -120,7 +126,8 @@ a {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  color: #334155; /* Darker text */
+  color: #334155;
+  flex-grow: 1;
 }
 
 .contact-body p {
@@ -132,30 +139,29 @@ a {
 }
 
 .contact-body i {
-  color: #475569; /* Darker icons */
+  color: #475569;
   font-size: 1rem;
 }
 
-/* Status colors */
 .contact-body p:last-child {
-  color: #0f172a; /* Darker text */
+  color: #0f172a;
   font-weight: 500;
 }
 
 .contact-body p:last-child i.bi-check-circle {
-  color: #16a34a; /* Slightly darker green */
+  color: #16a34a;
 }
 
 .contact-body p:last-child i.bi-x-circle {
-  color: #dc2626; /* Slightly darker red */
+  color: #dc2626;
 }
 
-/* Responsive grid */
 .contact-list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Always 3 columns */
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
 }
+
 /* Modal styling */
 .modal {
   margin: auto;
@@ -167,7 +173,6 @@ a {
   max-width: 600px;
 }
 
-/* Remove default backdrop */
 .modal::backdrop {
   background: rgba(0, 0, 0, 0.5);
 }
@@ -179,7 +184,6 @@ a {
   padding: 16px;
 }
 
-/* Updated close button styling with red background */
 .modal-header .bi-x-lg {
   cursor: pointer;
   font-size: 1.2rem;
@@ -208,7 +212,6 @@ a {
   padding: 16px;
 }
 
-/* Form styling improvements */
 .user-details {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -234,7 +237,6 @@ a {
   width: 100%;
 }
 
-/* File input styling updated to be displayed as a column */
 .file-input {
   grid-column: 1 / -1;
   display: flex;
@@ -256,7 +258,6 @@ a {
   margin-top: 20px;
 }
 
-/* Only adding the danger button style */
 .btn-danger {
   background-color: #fd1100;
   color: white;
@@ -265,23 +266,73 @@ a {
   transition: all 0.5s ease;
 }
 
-/* Override the blue hover effect for cancel button */
 .btn.btn-danger:hover {
-  background-color: #ff6b6b; /* Brighter red */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Red-tinted shadow */
+  background-color: #ff6b6b;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .btn.btn-danger:active {
-  background-color: #d32f2f; /* Darker red for active state */
+  background-color: #d32f2f;
   transform: translateY(1px);
   box-shadow: 0 1px 2px rgba(244, 67, 54, 0.3);
+}
+
+.pagination-container {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 100;
+  background: white;
+  padding: 15px 0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.pagination {
+  display: flex;
+  gap: 5px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  border: 1px solid #ddd;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.pagination a:hover:not(.active):not(.disabled) {
+  background-color: #f0f0f0;
+}
+
+.pagination .active {
+  background-color: #07318d;
+  color: white;
+  border-color: #07318d;
+}
+
+.pagination .disabled {
+  color: #ccc;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .reset-btn,
 button[type="reset"] {
   padding: 8px 16px;
   background: none;
-  color: #333; /* Dark color */
+  color: #333;
   border: none;
   cursor: pointer;
   font-weight: bold;
@@ -299,36 +350,29 @@ button[type="reset"]:hover {
   top: 10%;
 }
 
-
 .profile-details img {
   width: 150px;
   border-radius: 10%;
-  border: 2px solid #07318d; 
+  border: 2px solid #07318d;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-
 }
 
-.profile-settings{
+.profile-settings {
   position: absolute;
   left: 20rem;
   top: 0;
-  /* border: 1px solid green; */
   width: 100%;
-  
 }
-
 
 .profile-muted {
-	font-size: 15px;
-	color: #75777a;
-	margin-bottom: 0.5rem;
+  font-size: 15px;
+  color: #75777a;
+  margin-bottom: 0.5rem;
 }
-
 
 .link {
   position: absolute;
-  left: 1.25rem;
-  top: 50%;
+  
 }
 
 /* Media queries for responsive design */
@@ -338,55 +382,49 @@ button[type="reset"]:hover {
     align-items: flex-start;
   }
 
-  
   .profile {
     grid-template-columns: 1fr;
   }
-  
-  .profile-details, .profile-settings {
-    grid-column: 1; /* Both stack in single column on mobile */
+
+  .profile-details,
+  .profile-settings {
+    grid-column: 1;
   }
-  
-  /* Adjust profile details layout for smaller screens */
+
   .profile-details {
     flex-direction: column;
     align-items: center;
     text-align: center;
     padding: 15px;
   }
-  
-  /* Ensure the profile metadata stays properly aligned */
+
   .profile-metadata {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
   }
-  
-  /* Fix the button to prevent it from moving away */
+
   .btn {
     display: inline-block;
     width: auto;
     min-width: 160px;
     margin: 0 auto;
     position: relative;
-    left: 0; /* Prevent any offset */
+    left: 0;
     width: 100%;
     max-width: fit-content;
   }
-  
-  /* Ensure image container stays responsive */
+
   .image-container {
     margin-bottom: 10px;
   }
 
   .form-footer {
-  position: relative;
-  margin-top: 20px;
+    position: relative;
+    margin-top: 20px;
+  }
 }
-
-}
-
 
 @media screen and (max-width: 480px) {
   .header {

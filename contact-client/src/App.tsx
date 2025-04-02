@@ -32,7 +32,7 @@ function App() {
   });
   const [file, setFile] = useState<File>();
 
-  const getAllContacts = async (page = 0, size = 10) => {
+  const getAllContacts = async (page = 0, size = 6) => {
     try {
       setCurrentPage(page);
       const response = await getContacts(page, size);
@@ -79,8 +79,25 @@ function App() {
     }
   };
 
-  const updateContact = async () => {};
-  const updateImage = async () => {};
+  const updateContact = async (contact: ContactInfo) => {
+    try {
+      const { data } = await saveContact(contact);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const updateImage = async (
+    formData: FormData
+  ): Promise<string | undefined> => {
+    try {
+      const { data: photoUrl } = await updatePhoto(formData);
+      return photoUrl; // Make sure backend returns the new URL
+    } catch (error) {
+      console.log(error);
+      return undefined;
+    }
+  };
 
   useEffect(() => {
     getAllContacts();

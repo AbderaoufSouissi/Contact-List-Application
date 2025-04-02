@@ -43,29 +43,31 @@ const ContactList = ({
           ))}
       </ul>
       {data?.content?.length > 0 && data?.totalPages > 1 && (
-        <div className="pagination">
-          <a
-            onClick={() => getAllContacts(currentPage - 1)}
-            className={currentPage === 0 ? "disbaled" : ""}
-          >
-            &laquo;
-          </a>
-          {data &&
-            [...Array(data.totalPages).keys()].map((page, index) => (
-              <a
-                onClick={() => getAllContacts(page)}
-                className={currentPage === page ? "active" : ""}
-                key={page}
-              >
-                {page + 1}
-              </a>
-            ))}
-          <a
-            onClick={() => getAllContacts(currentPage + 1)}
-            className={data.totalPages === currentPage + 1 ? "disabled" : ""}
-          >
-            &raquo;
-          </a>
+        <div className="pagination-container">
+          <div className="pagination">
+            <a
+              onClick={() => getAllContacts(currentPage - 1)}
+              className={currentPage === 0 ? "disbaled" : ""}
+            >
+              &laquo;
+            </a>
+            {data &&
+              [...Array(data.totalPages).keys()].map((page, index) => (
+                <a
+                  onClick={() => getAllContacts(page)}
+                  className={currentPage === page ? "active" : ""}
+                  key={page}
+                >
+                  {page + 1}
+                </a>
+              ))}
+            <a
+              onClick={() => getAllContacts(currentPage + 1)}
+              className={data.totalPages === currentPage + 1 ? "disabled" : ""}
+            >
+              &raquo;
+            </a>
+          </div>
         </div>
       )}
     </main>
