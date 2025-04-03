@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getContact } from "../api/ContactService";
+import { toastError, toastSuccess } from "../api/ToastService";
 
 interface Contact {
   id: string;
@@ -45,8 +46,10 @@ const ContactDetails = ({
     try {
       const { data } = await getContact(id);
       setContact(data);
-    } catch (error) {
+      // toastSuccess("Contact retrieved")
+    } catch (error: any) {
       console.log(error);
+      toastError(error.message);
     }
   };
 
@@ -74,9 +77,11 @@ const ContactDetails = ({
         if (onContactUpdated) {
           onContactUpdated(updatedContact);
         }
+        toastSuccess("Photo Updated");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Photo update failed:", error);
+      toastError(error.message);
     } finally {
       setIsUpdatingPhoto(false);
       if (inputRef.current) {
@@ -99,8 +104,10 @@ const ContactDetails = ({
       if (onContactUpdated) {
         onContactUpdated(contact);
       }
-    } catch (error) {
+      toastSuccess("Contact Updated");
+    } catch (error: any) {
       console.log(error);
+      toastError(error.message);
     }
   };
 

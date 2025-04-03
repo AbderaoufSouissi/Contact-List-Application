@@ -7,6 +7,8 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import ContactList from "./components/ContactList";
 import ContactDetails from "./components/ContactDetails";
 import { ContactInfo } from "./types/ContactInfo";
+import { toastError, toastSuccess } from "./api/ToastService";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const location = useLocation();
@@ -37,8 +39,9 @@ function App() {
       setCurrentPage(page);
       const response = await getContacts(page, size);
       setData(response.data);
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      toastError(error.message);
     }
   };
 
@@ -74,8 +77,10 @@ function App() {
         status: "",
       });
       getAllContacts();
-    } catch (error) {
+      toastSuccess("Contact added successfully!");
+    } catch (error: any) {
       console.log(error);
+      toastError(error.message);
     }
   };
 
@@ -84,8 +89,9 @@ function App() {
       const { data } = await saveContact(contact);
       console.log(data);
       return data;
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      toastError(error.message);
     }
   };
 
@@ -97,8 +103,10 @@ function App() {
     try {
       const { data: photoUrl } = await updatePhoto(formData);
       return photoUrl; // Make sure backend returns the new URL
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
+      toastError(error.message);
+
       return undefined;
     }
   };
@@ -256,6 +264,7 @@ function App() {
           </form>
         </div>
       </dialog>
+      <ToastContainer />
     </>
   );
 }
