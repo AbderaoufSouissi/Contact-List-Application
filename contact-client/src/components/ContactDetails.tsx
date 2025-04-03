@@ -95,6 +95,10 @@ const ContactDetails = ({
     try {
       await updateContact(contact);
       fetchContact(id);
+
+      if (onContactUpdated) {
+        onContactUpdated(contact);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -106,7 +110,15 @@ const ContactDetails = ({
 
   return (
     <>
-      <Link to={"/contacts"} className="link">
+      <Link
+        to={"/contacts"}
+        className="link"
+        onClick={() => {
+          if (onContactUpdated) {
+            onContactUpdated(contact); // Notify parent before navigating
+          }
+        }}
+      >
         <i className="bi bi-arrow-left"></i> Back to list
       </Link>
       <div className="profile">

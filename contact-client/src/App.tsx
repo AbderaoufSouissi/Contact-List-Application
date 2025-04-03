@@ -83,14 +83,13 @@ function App() {
     try {
       const { data } = await saveContact(contact);
       console.log(data);
+      return data;
     } catch (error) {
       console.log(error);
     }
   };
 
-  
-
-
+  const [lastUpdate, setLastUpdate] = useState(Date.now());
 
   const updateImage = async (
     formData: FormData
@@ -105,8 +104,8 @@ function App() {
   };
 
   useEffect(() => {
-    getAllContacts();
-  }, []);
+    getAllContacts(currentPage);
+  }, [currentPage, lastUpdate]);
   return (
     <>
       <Header
@@ -134,6 +133,7 @@ function App() {
                 <ContactDetails
                   updateContact={updateContact}
                   updateImage={updateImage}
+                  onContactUpdated={() => setLastUpdate(Date.now())}
                 />
               }
             />
