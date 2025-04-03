@@ -16,7 +16,9 @@ const Contact = (contact: ContactProps) => {
     <Link to={`/contacts/${contact.id}`} className="contact-item">
       <div className="contact-header">
         <div className="contact-image">
-        {contact.photoUrl && <img src={contact.photoUrl} alt={contact.name} />}
+          {contact.photoUrl && (
+            <img src={contact.photoUrl} alt={contact.name} />
+          )}
         </div>
         <div className="contact-details">
           <p className="contact-name">{contact.name} </p>

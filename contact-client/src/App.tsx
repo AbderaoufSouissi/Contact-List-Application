@@ -87,6 +87,11 @@ function App() {
       console.log(error);
     }
   };
+
+  
+
+
+
   const updateImage = async (
     formData: FormData
   ): Promise<string | undefined> => {

@@ -16,12 +16,14 @@ interface Contact {
 interface ContactDetailProps {
   updateContact: (contact: Contact) => Promise<void>;
   updateImage: (formData: FormData) => Promise<string | undefined>;
+  onContactUpdated?: (updatedContact: Contact) => void;
 }
 
-const ContactDetail: React.FC<ContactDetailProps> = ({
+const ContactDetails = ({
   updateContact,
   updateImage,
-}) => {
+  onContactUpdated,
+}: ContactDetailProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [contact, setContact] = useState<Contact>({
     id: "",
@@ -34,6 +36,7 @@ const ContactDetail: React.FC<ContactDetailProps> = ({
     photoUrl: "",
   });
 
+  const [isUpdatingPhoto, setIsUpdatingPhoto] = useState(false);
   const { id } = useParams<{ id: string }>();
 
   const fetchContact = async (id: string | undefined) => {
@@ -42,7 +45,6 @@ const ContactDetail: React.FC<ContactDetailProps> = ({
     try {
       const { data } = await getContact(id);
       setContact(data);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -56,6 +58,7 @@ const ContactDetail: React.FC<ContactDetailProps> = ({
 
   const updatePhoto = async (file: File) => {
     if (!id) return;
+    setIsUpdatingPhoto(true);
 
     try {
       const formData = new FormData();
@@ -64,15 +67,21 @@ const ContactDetail: React.FC<ContactDetailProps> = ({
 
       const newPhotoUrl = await updateImage(formData);
       if (newPhotoUrl) {
-        setContact((prev) => ({ ...prev, photoUrl: newPhotoUrl }));
-      }
+        const updatedPhotoUrl = `${newPhotoUrl}?${Date.now()}`;
+        const updatedContact = { ...contact, photoUrl: updatedPhotoUrl };
+        setContact(updatedContact);
 
-      // Reset file input
+        if (onContactUpdated) {
+          onContactUpdated(updatedContact);
+        }
+      }
+    } catch (error) {
+      console.error("Photo update failed:", error);
+    } finally {
+      setIsUpdatingPhoto(false);
       if (inputRef.current) {
         inputRef.current.value = "";
       }
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -86,7 +95,9 @@ const ContactDetail: React.FC<ContactDetailProps> = ({
     try {
       await updateContact(contact);
       fetchContact(id);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -101,9 +112,16 @@ const ContactDetail: React.FC<ContactDetailProps> = ({
       <div className="profile">
         <div className="profile-details">
           <img
-            src={contact.photoUrl || "default-profile.png"}
+            src={
+              isUpdatingPhoto
+                ? "loading-spinner.gif"
+                : `${contact.photoUrl}?${Date.now()}`
+            }
             alt={`Profile photo of ${contact.name}`}
             className="profile-image"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = "default-profile.png";
+            }}
           />
           <div className="profile-metadata">
             <p className="profile-name">{contact.name}</p>
@@ -211,4 +229,4 @@ const ContactDetail: React.FC<ContactDetailProps> = ({
   );
 };
 
-export default ContactDetail;
+export default ContactDetails;
